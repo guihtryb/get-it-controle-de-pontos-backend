@@ -1,46 +1,47 @@
 import { Model, INTEGER, STRING, DECIMAL } from 'sequelize';
 import db from '.';
 
-class Products extends Model {
+class Users extends Model {
   id!: number;
-  name: string;
-  urlImage: string;
-  totalQuantity: number;
-  price: number;
-  size: string;
-  pointsConverter: number;
+  fullName: string;
+  email: string;
+  password: string;
+  role: string;
+  points: number;
 }
 
-Products.init({
+Users.init({
   id: {
     type: INTEGER,
     allowNull: false,
     primaryKey: true,
     autoIncrement: true,
   },
-  name: {
+  fullName: {
     type: STRING(255),
     allowNull: false,
   },
-  totalQuantity: {
-    type: INTEGER,
-    allowNull: false,
-  },
-  price: {
-    type: DECIMAL(9, 2),
-    allowNull: false,
-  },
-  size: {
+  email: {
     type: STRING(255),
+    allowNull: false,
   },
-  pointsConverter: {
+  password: {
+    type: STRING(255),
+    allowNull: false,
+  },
+  role: {
+    type: STRING(255),
+    allowNull: false,
+  },
+  points: {
     type: DECIMAL(9, 2),
+    allowNull: false,
   },
 }, {
   underscored: true,
   sequelize: db,
-  modelName: 'Products',
+  modelName: 'Users',
   timestamps: false
 });
 
-export default Products;
+export default Users;
