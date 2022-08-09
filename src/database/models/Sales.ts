@@ -5,10 +5,10 @@ import Users from './Users';
 
 class Sales extends Model {
   id!: number;
-  userId: string;
+  userId: number;
   sellerId: number;
   totalPrice: number;
-  totalPoints: string;
+  totalPoints: number;
   deliveryAddress: string;
   saleDate: Date;
   status: string;
