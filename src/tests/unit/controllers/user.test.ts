@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 import UserController from '../../../controllers/usersController';
-import { userService } from '../../../services/usersService';
+import { usersService } from '../../../services/usersService';
 import { userMock } from '../../mocks/userMock';
 import { Request, Response } from 'express';
 
@@ -19,7 +19,7 @@ describe('Testing User Controller', () => {
       const req = {} as Request;
       const res = {} as Response;
 
-      sinon.stub(userService, 'create').rejects(null);
+      sinon.stub(usersService, 'create').rejects(null);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -34,7 +34,7 @@ describe('Testing User Controller', () => {
       const req = {} as Request;
       const res = {} as Response;
 
-      sinon.stub(userService, 'create').resolves(userMock);
+      sinon.stub(usersService, 'create').resolves(userMock);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -50,7 +50,7 @@ describe('Testing User Controller', () => {
       const req = {} as Request;
       const res = {} as Response;
 
-      sinon.stub(userService, 'getAll').resolves([userMock]);
+      sinon.stub(usersService, 'getAll').resolves([userMock]);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -64,7 +64,7 @@ describe('Testing User Controller', () => {
       const req = {} as Request;
       const res = {} as Response;
 
-      sinon.stub(userService, 'getAll').rejects(null);
+      sinon.stub(usersService, 'getAll').rejects(null);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -81,7 +81,7 @@ describe('Testing User Controller', () => {
       const res = {} as Response;
       req.params = { id: "2" };
 
-      sinon.stub(userService, 'getById').rejects(null);
+      sinon.stub(usersService, 'getById').rejects(null);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -95,7 +95,7 @@ describe('Testing User Controller', () => {
       const req = {} as Request;
       const res = {} as Response;
       req.params = { id: '1' };
-      sinon.stub(userService, 'getById').resolves(userMock);
+      sinon.stub(usersService, 'getById').resolves(userMock);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -112,7 +112,7 @@ describe('Testing User Controller', () => {
       const res = {} as Response;
       req.params = { id: "2" };
 
-      sinon.stub(userService, 'update').rejects(null);
+      sinon.stub(usersService, 'update').rejects(null);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -127,7 +127,7 @@ describe('Testing User Controller', () => {
       const res = {} as Response;
       req.params = { id: '1' };
 
-      sinon.stub(userService, 'update').resolves(userMock);
+      sinon.stub(usersService, 'update').resolves(userMock);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -144,7 +144,7 @@ describe('Testing User Controller', () => {
       const res = {} as Response;
       req.params = { id: "2" };
 
-      sinon.stub(userService, 'delete').rejects(null);
+      sinon.stub(usersService, 'delete').rejects(null);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
@@ -159,7 +159,7 @@ describe('Testing User Controller', () => {
       const res = {} as Response;
       req.params = { id: '1' };
 
-      sinon.stub(userService, 'delete').resolves(userMock);
+      sinon.stub(usersService, 'delete').resolves(userMock);
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 

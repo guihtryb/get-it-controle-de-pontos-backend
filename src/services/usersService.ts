@@ -2,7 +2,7 @@ import IUser, { userZodSchema } from '../interfaces/IUser';
 import IService, { ServiceError } from '../interfaces/IService';
 import Users from '../database/models/Users';
 
-export default class UserService implements IService<IUser> {
+export default class UsersService implements IService<IUser> {
   async create(newUser: IUser): Promise<IUser | ServiceError> {
     const parsed = userZodSchema.safeParse(newUser);
 
@@ -50,4 +50,4 @@ export default class UserService implements IService<IUser> {
   }
 }
 
-export const userService = new UserService();
+export const usersService = new UsersService();

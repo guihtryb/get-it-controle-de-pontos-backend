@@ -1,15 +1,15 @@
 import IUser from '../interfaces/IUser';
-import { userService } from '../services/usersService';
+import { usersService } from '../services/usersService';
 import { RequestWithBody } from '../interfaces/IController';
 import { ResponseError } from '../interfaces/IController';
 import { Request, Response } from 'express';
 import BaseController from './BaseController';
 
-export default class UserController extends BaseController<IUser> {
+export default class UsersController extends BaseController<IUser> {
   private _route: string;
 
   constructor(
-    service = userService,
+    service = usersService,
     route = '/users',
     ) {
       super(service)

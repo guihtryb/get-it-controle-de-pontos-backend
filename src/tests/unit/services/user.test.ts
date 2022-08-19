@@ -2,7 +2,7 @@ import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { SafeParseError, SafeParseSuccess, ZodError } from 'zod';
 import Users from '../../../database/models/Users';
-import UserService from '../../../services/User';
+import UserService from '../../../services/usersService';
 import { userMock, userMockWithId, userMockWithIdUpdated } from '../../mocks/userMock';
 import IUser, { userZodSchema } from '../../../interfaces/IUser';
 import { zodError } from '../../mocks/zod';
