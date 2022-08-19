@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import * as sinon from 'sinon';
 import { SafeParseError, SafeParseSuccess, ZodError } from 'zod';
-import { ErrorTypes } from '../../../errors/catalog';
 import Users from '../../../database/models/Users';
 import UserService from '../../../services/User';
 import { userMock, userMockWithId, userMockWithIdUpdated } from '../../mocks/userMock';
@@ -60,7 +59,7 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.getById(1);
+      const user = await userService.getById('1');
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -69,7 +68,7 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.getById(1);
+      const user = await userService.getById('1');
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -83,7 +82,7 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.update(1, 1800);
+      const user = await userService.update('1', 1800);
 
       expect(user).to.be.deep.equal(userMockWithIdUpdated);
     });
@@ -92,9 +91,9 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.update(4, 1800);
+      const user = await userService.update('4', 1800);
 
-      expect(user).to.be.equal(false);
+      expect(user).to.be.equal(null);
     });
   });
   describe('When deleting an user', () => {
@@ -104,7 +103,7 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.delete(1);
+      const user = await userService.delete('1');
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -113,9 +112,9 @@ describe('User Service', () => {
 
       const userService = new UserService();
 
-      const user = await userService.delete(1);
+      const user = await userService.delete('1');
 
-      expect(user).to.be.equal(false);
+      expect(user).to.be.equal(null);
     });
   });
 });
