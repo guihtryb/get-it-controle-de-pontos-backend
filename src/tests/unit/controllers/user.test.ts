@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-import UserController from '../../../controllers/User';
-import { userService } from '../../../services/User';
+import UserController from '../../../controllers/usersController';
+import { userService } from '../../../services/usersService';
 import { userMock } from '../../mocks/userMock';
 import { Request, Response } from 'express';
 
