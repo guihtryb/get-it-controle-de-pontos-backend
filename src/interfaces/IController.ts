@@ -8,7 +8,7 @@ export interface RequestWithBody<T> extends Request {
   body: T;
 }
 
-export default interface Controller<T> {
+export default interface IController<T> {
   create(
     req: RequestWithBody<T>,
     res: Response<T | ResponseError>,

@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-import UserController from '../../../controllers/usersController';
-import { usersService } from '../../../services/usersService';
+import UsersController from '../../../controllers/UsersController';
+import { usersService } from '../../../services/UsersService';
 import { userMock } from '../../mocks/userMock';
 import { Request, Response } from 'express';
 
@@ -23,8 +23,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.create(req, res)
+      const usersController = new UsersController();
+      await usersController.create(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(500)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ error: "Internal Server Error" })).to.be.true;
@@ -38,8 +38,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.create(req, res)
+      const usersController = new UsersController();
+      await usersController.create(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(201)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(userMock)).to.be.true;
@@ -54,8 +54,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.getAll(req, res)
+      const usersController = new UsersController();
+      await usersController.getAll(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith([userMock])).to.be.true;
@@ -68,8 +68,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.getAll(req, res)
+      const usersController = new UsersController();
+      await usersController.getAll(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(500)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ error: "Internal Server Error" })).to.be.true;
@@ -85,8 +85,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.getById(req, res)
+      const usersController = new UsersController();
+      await usersController.getById(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(500)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ error: "Internal Server Error" })).to.be.true;
@@ -99,8 +99,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.getById(req, res)
+      const usersController = new UsersController();
+      await usersController.getById(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(userMock)).to.be.true;
@@ -116,8 +116,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.update(req, res)
+      const usersController = new UsersController();
+      await usersController.update(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(500)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ error: "Internal Server Error" })).to.be.true;
@@ -131,8 +131,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.update(req, res)
+      const usersController = new UsersController();
+      await usersController.update(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(200)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(userMock)).to.be.true;
@@ -148,8 +148,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.delete(req, res)
+      const usersController = new UsersController();
+      await usersController.delete(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(500)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith({ error: "Internal Server Error" })).to.be.true;
@@ -163,8 +163,8 @@ describe('Testing User Controller', () => {
       res.status = sinon.stub().returns(res);
       res.json = sinon.stub().returns(res);
 
-      const userController = new UserController();
-      await userController.delete(req, res)
+      const usersController = new UsersController();
+      await usersController.delete(req, res)
 
       expect((res.status as sinon.SinonStub).calledWith(204)).to.be.true;
       expect((res.json as sinon.SinonStub).calledWith(userMock)).to.be.true;

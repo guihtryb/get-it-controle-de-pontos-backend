@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
 
 import
-Controller,
+IController,
 {
   RequestWithBody,
   ResponseError,
@@ -15,7 +15,7 @@ enum ControllerErrors {
   BAD_REQUEST = 'Invalid Data Format',
 }
 
-export default abstract class BaseController<T> implements Controller<T> {
+export default abstract class BaseController<T> implements IController<T> {
   abstract route: string;
 
   protected errors = ControllerErrors;

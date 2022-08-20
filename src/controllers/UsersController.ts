@@ -1,5 +1,5 @@
 import IUser from '../interfaces/IUser';
-import { usersService } from '../services/usersService';
+import { usersService } from '../services/UsersService';
 import { RequestWithBody } from '../interfaces/IController';
 import { ResponseError } from '../interfaces/IController';
 import { Request, Response } from 'express';
