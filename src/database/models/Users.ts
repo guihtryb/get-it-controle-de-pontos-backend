@@ -5,7 +5,7 @@ class Users extends Model {
   id!: number;
   fullName: string;
   email: string;
-  password: string;
+  password?: string;
   role: string;
   points: number;
 }
