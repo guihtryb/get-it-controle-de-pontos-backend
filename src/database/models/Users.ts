@@ -3,10 +3,15 @@ import db from '.';
 
 class Users extends Model {
   id!: number;
+
   fullName: string;
+
   email: string;
-  password: string;
+
+  password?: string;
+
   role: string;
+
   points: number;
 }
 
@@ -41,7 +46,7 @@ Users.init({
   underscored: true,
   sequelize: db,
   modelName: 'Users',
-  timestamps: false
+  timestamps: false,
 });
 
 export default Users;

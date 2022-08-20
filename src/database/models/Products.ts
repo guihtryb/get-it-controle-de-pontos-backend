@@ -3,11 +3,17 @@ import db from '.';
 
 class Products extends Model {
   id!: number;
+
   name: string;
+
   urlImage: string;
+
   totalQuantity: number;
+
   price: number;
+
   size: string;
+
   pointsConverter: number;
 }
 
@@ -40,7 +46,7 @@ Products.init({
   underscored: true,
   sequelize: db,
   modelName: 'Products',
-  timestamps: false
+  timestamps: false,
 });
 
 export default Products;

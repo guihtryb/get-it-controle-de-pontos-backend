@@ -1,9 +1,3 @@
-import Products from "./database/models/Products";
+import server from './server';
 
-(async () => {
-
-  const books = await Products.findAll({ raw: true });
-  console.table(books);
-  process.exit(0);
-
-})();
+server.startServer();

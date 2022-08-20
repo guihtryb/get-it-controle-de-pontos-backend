@@ -1,8 +1,10 @@
 import { Request, Response } from 'express';
+import { ZodIssue } from 'zod';
 
 import
-Controller,
+IController,
 {
+  ControllerError,
   RequestWithBody,
   ResponseError,
 } from '../interfaces/IController';
@@ -15,7 +17,7 @@ enum ControllerErrors {
   BAD_REQUEST = 'Invalid Data Format',
 }
 
-export default abstract class BaseController<T> implements Controller<T> {
+export default abstract class BaseController<T> implements IController<T> {
   abstract route: string;
 
   protected errors = ControllerErrors;
@@ -27,6 +29,15 @@ export default abstract class BaseController<T> implements Controller<T> {
     res: Response<T | ResponseError>,
   ): Promise<typeof res>;
 
+  static createError(issue: ZodIssue): ControllerError {
+    const error = {
+      path: issue.path ? issue.path[0].toString() : undefined,
+      message: issue.message,
+    };
+
+    return error;
+  }
+
   getAll = async (
     _req: Request,
     res: Response<T[] | ResponseError>,
@@ -36,9 +47,7 @@ export default abstract class BaseController<T> implements Controller<T> {
 
       return res.status(200).json(items);
     } catch (error) {
-      return res.status(500).json({
-        error: this.errors.INTERNAL,
-      });
+      return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 
