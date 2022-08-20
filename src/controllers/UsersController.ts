@@ -1,8 +1,7 @@
+import { Request, Response } from 'express';
 import IUser from '../interfaces/IUser';
 import { usersService } from '../services/UsersService';
-import { RequestWithBody } from '../interfaces/IController';
-import { ResponseError } from '../interfaces/IController';
-import { Request, Response } from 'express';
+import { RequestWithBody, ResponseError } from '../interfaces/IController';
 import BaseController from './BaseController';
 
 export default class UsersController extends BaseController<IUser> {
@@ -11,14 +10,14 @@ export default class UsersController extends BaseController<IUser> {
   constructor(
     service = usersService,
     route = '/users',
-    ) {
-      super(service)
-      this._route = route;
-    }
+  ) {
+    super(service);
+    this._route = route;
+  }
 
-    get route(): string {
-      return this._route;
-    }
+  get route(): string {
+    return this._route;
+  }
 
   create = async (
     req: RequestWithBody<IUser>,
@@ -29,28 +28,13 @@ export default class UsersController extends BaseController<IUser> {
       const newUser = await this.service.create(body);
 
       if ('error' in newUser) {
-        return res.status(400).json({ error: newUser.error });
+        const errors = newUser.error.issues.map(UsersController.createError);
+
+        return res.status(400).json({ errors });
       }
       return res.status(201).json(newUser);
     } catch (error) {
-      return res.status(500).json({
-        error: this.errors.INTERNAL,
-      });
-    }
-  };
-
-  getAll = async (
-    _req: RequestWithBody<IUser>,
-    res: Response<IUser[] | ResponseError>,
-  ): Promise<typeof res> => {
-    try {
-      const users = await this.service.getAll();
-
-      return res.status(200).json(users);
-    } catch (error) {
-      return res.status(500).json({
-        error: this.errors.INTERNAL
-      });
+      return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 
@@ -62,11 +46,11 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const user = await this.service.getById(id);
 
-      if (!user) return res.status(404).json({ error: this.errors.NOT_FOUND });
+      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
 
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(500).json({ error: this.errors.INTERNAL });
+      return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 
@@ -80,13 +64,13 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const user = await this.service.update(id, points);
 
-      if (!user) return res.status(404).json({ error: this.errors.NOT_FOUND });
+      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
 
       return res.status(200).json(user);
     } catch (error) {
-      return res.status(500).json({ error: this.errors.INTERNAL });
+      return res.status(500).json({ message: this.errors.INTERNAL });
     }
-  }
+  };
 
   delete = async (
     req: Request,
@@ -96,11 +80,11 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const user = await this.service.delete(id);
 
-      if (!user) return res.status(404).json({ error: this.errors.NOT_FOUND });
+      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
 
       return res.status(204).json(user);
     } catch (error) {
-      return res.status(500).json({ error: this.errors.INTERNAL });
+      return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 }

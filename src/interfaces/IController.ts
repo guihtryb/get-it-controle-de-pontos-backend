@@ -1,8 +1,19 @@
 import { Request, Response } from 'express';
 
-export type ResponseError = {
-  error: unknown;
+type ErrorMessage = {
+  message: string;
 };
+
+export type ControllerError = {
+  path?: string;
+  message: string;
+};
+
+type BadRequestErrors = {
+  errors: ControllerError[],
+};
+
+export type ResponseError = BadRequestErrors | ErrorMessage;
 
 export interface RequestWithBody<T> extends Request {
   body: T;

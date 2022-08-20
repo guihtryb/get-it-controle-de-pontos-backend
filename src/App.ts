@@ -15,12 +15,13 @@ export default class App {
   }
 
   public addRouter(router: Router) {
-    this.app.use(router)
+    this.app.use(router);
   }
 
   public startServer(PORT: number | string = 3001) {
     this.app.listen(
       PORT,
-      () => console.log(`Server running on localhost:${PORT}`));
+      () => console.log(`Server running on localhost:${PORT}`),
+    );
   }
 }

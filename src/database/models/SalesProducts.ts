@@ -5,7 +5,9 @@ import Sales from './Sales';
 
 class SalesProducts extends Model {
   productId: number;
+
   saleId: number;
+
   quantity: number;
 }
 
@@ -18,7 +20,7 @@ SalesProducts.init({
   saleId: {
     type: INTEGER,
     allowNull: false,
-    primaryKey: true
+    primaryKey: true,
   },
   quantity: {
     type: INTEGER,
@@ -28,12 +30,17 @@ SalesProducts.init({
   underscored: true,
   sequelize: db,
   modelName: 'SalesProducts',
-  timestamps: false
+  timestamps: false,
 });
 
-Sales.belongsToMany(Products, { through: SalesProducts, as: 'products', foreignKey: 'saleId'});
+Sales.belongsToMany(
+  Products,
+  { through: SalesProducts, as: 'products', foreignKey: 'saleId' },
+);
 
-Products.belongsToMany(Sales, { through: SalesProducts, as: 'sales', foreignKey: 'productId'});
+Products.belongsToMany(
+  Sales,
+  { through: SalesProducts, as: 'sales', foreignKey: 'productId' },
+);
 
 export default SalesProducts;
-

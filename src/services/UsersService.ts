@@ -3,20 +3,27 @@ import IService, { ServiceError } from '../interfaces/IService';
 import Users from '../database/models/Users';
 
 export default class UsersService implements IService<IUser> {
+  private _model;
+
+  constructor() {
+    this._model = Users;
+  }
+
   async create(newUser: IUser): Promise<IUser | ServiceError> {
     const parsed = userZodSchema.safeParse(newUser);
 
-    return parsed.success ? Users.create(newUser) : { error: parsed.error }
+    return (parsed.success ? this._model.create(newUser)
+      : { error: parsed.error });
   }
 
-  excludeUserPassword(user: IUser): IUser {
+  static excludeUserPassword(user: IUser): IUser {
     const userInfos = {
       id: user.id,
       fullName: user.fullName,
       email: user.email,
       role: user.role,
       points: user.points,
-    }
+    };
 
     return userInfos;
   }
@@ -24,29 +31,30 @@ export default class UsersService implements IService<IUser> {
   async getById(id: string): Promise<IUser | null> {
     const parsedId = +id;
 
-    const user = await Users.findByPk(parsedId);
+    const user = await this._model.findByPk(parsedId);
 
     if (!user) return null;
 
-    const userInfos = this.excludeUserPassword(user);
+    const userInfos = UsersService.excludeUserPassword(user);
 
     return userInfos;
   }
 
   async getAll(): Promise<IUser[]> {
-    const users = (await Users.findAll()).map(this.excludeUserPassword);
+    const users = (await this._model.findAll())
+      .map(UsersService.excludeUserPassword);
 
     return users;
   }
 
-  async update(id: string, points: number): Promise<IUser | null> {
+  async update(id: string, user: IUser): Promise<IUser | null> {
     const parsedId = +id;
 
     const userToUpdate = await this.getById(id);
 
     if (!userToUpdate) return null;
 
-    await Users.update({ points }, { where: { id: parsedId } });
+    await Users.update({ user }, { where: { id: parsedId } });
 
     const userUpdated = await this.getById(id);
 

@@ -1,16 +1,22 @@
-import { DATE } from 'sequelize';
-import { Model, INTEGER, STRING, DECIMAL } from 'sequelize';
+import { DATE, Model, INTEGER, STRING, DECIMAL } from 'sequelize';
 import db from '.';
 import Users from './Users';
 
 class Sales extends Model {
   id!: number;
+
   userId: number;
+
   sellerId: number;
+
   totalPrice: number;
+
   totalPoints: number;
+
   deliveryAddress: string;
+
   saleDate: Date;
+
   status: string;
 }
 
@@ -26,16 +32,16 @@ Sales.init({
     allowNull: false,
     references: {
       key: 'id',
-      model: 'users'
-    }
+      model: 'users',
+    },
   },
   sellerId: {
     type: INTEGER,
     allowNull: false,
     references: {
       key: 'id',
-      model: 'users'
-    }
+      model: 'users',
+    },
   },
   totalPrice: {
     type: DECIMAL(9, 2),
@@ -60,18 +66,18 @@ Sales.init({
   status: {
     type: STRING(100),
     allowNull: false,
-  }
+  },
 }, {
   underscored: true,
   sequelize: db,
   modelName: 'Sales',
-  timestamps: false
+  timestamps: false,
 });
 
 Sales.belongsTo(Users, { foreignKey: 'id', as: 'userId' });
 Sales.belongsTo(Users, { foreignKey: 'id', as: 'sellerId' });
 
-Users.hasMany(Sales, { foreignKey: 'id', as: 'userId'});
-Users.hasMany(Sales, { foreignKey: 'id', as: 'sellerId'});
+Users.hasMany(Sales, { foreignKey: 'id', as: 'userId' });
+Users.hasMany(Sales, { foreignKey: 'id', as: 'sellerId' });
 
 export default Sales;
