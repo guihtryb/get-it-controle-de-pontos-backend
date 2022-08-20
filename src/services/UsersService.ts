@@ -9,6 +9,18 @@ export default class UsersService implements IService<IUser> {
     return parsed.success ? Users.create(newUser) : { error: parsed.error }
   }
 
+  excludeUserPassword(user: IUser): IUser {
+    const userInfos = {
+      id: user.id,
+      fullName: user.fullName,
+      email: user.email,
+      role: user.role,
+      points: user.points,
+    }
+
+    return userInfos;
+  }
+
   async getById(id: string): Promise<IUser | null> {
     const parsedId = +id;
 
@@ -16,11 +28,15 @@ export default class UsersService implements IService<IUser> {
 
     if (!user) return null;
 
-    return user;
+    const userInfos = this.excludeUserPassword(user);
+
+    return userInfos;
   }
 
   async getAll(): Promise<IUser[]> {
-    return Users.findAll()
+    const users = (await Users.findAll()).map(this.excludeUserPassword);
+
+    return users;
   }
 
   async update(id: string, points: number): Promise<IUser | null> {

@@ -104,3 +104,5 @@ export default class UsersController extends BaseController<IUser> {
     }
   };
 }
+
+export const usersController = new UsersController();
