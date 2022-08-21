@@ -23,6 +23,13 @@ const userZodSchema = z.object({
   }),
 });
 
+export interface IUserTokenData {
+  id: number | undefined;
+  fullName: string;
+  email: string;
+  role: string;
+}
+
 type IUser = z.infer<typeof userZodSchema>;
 
 export default IUser;

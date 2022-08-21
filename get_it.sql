@@ -51,8 +51,7 @@ CREATE TABLE IF NOT EXISTS sales_products (
 );
 
 INSERT INTO users (id, name, email, password, role, points) VALUES
-	(1, 'Get It Admin Jordan', 'jordan@getit.com', '$2a$12$NInfMuqnKFrxYxH6x3ZGd.vKM/BZi1X/cRvIOYBkLVdqVMzeFidwi
-', 'administrator', 0), -- password: 'jordanadminsitrator'
+	(1, 'Get It Admin Jordan', 'jordan@getit.com', '$2a$12$krrTSeGi4bIx9NlXc0WcXOGLLDa4WlicCLOuv7x4PQOyb/np32ZWK', 'administrator', 0), -- password: 'jordanadministrator'
 	(2, 'Jhon Doe', 'jhondoeshop@emal.com', '$2a$12$jXWtManRMG2hiPBygu3fD.1iILWGbKaL6Bqbc6qbpGPbz0S3LqWWS', 'seller', 0), -- password: 'jhondoeseller'
 	(3, 'Eddie Vedder', 'eddiev@email.com', '$2a$12$uSgBEhVFYPrxFA5UL.nlzOmrZlPk6qn0PkPceS/bPPhJ1KxJyPdfu', 'customer', 1250); -- password: 'eddieveddercustomer'
 
