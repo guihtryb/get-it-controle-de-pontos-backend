@@ -6,7 +6,7 @@ module.exports = {
         {
           full_name: 'Get It Admin Jordan',
           email: 'jordan@getit.com',
-          password: '$2a$12$NInfMuqnKFrxYxH6x3ZGd.vKM/BZi1X/cRvIOYBkLVdqVMzeFidwi',
+          password: '$2a$12$krrTSeGi4bIx9NlXc0WcXOGLLDa4WlicCLOuv7x4PQOyb/np32ZWK',
           role: 'adminsitrator',
           points: 0,
         },
