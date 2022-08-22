@@ -18,3 +18,5 @@ export default class LoginRouter {
     this.router.get(route, controller.get);
   }
 }
+
+export const loginRouter = new LoginRouter();

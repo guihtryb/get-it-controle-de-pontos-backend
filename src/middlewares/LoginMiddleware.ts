@@ -16,3 +16,5 @@ export default class LoginMiddleware extends CustomMiddleware<ILogin> {
     next();
   };
 }
+
+export const loginMiddleware = new LoginMiddleware();

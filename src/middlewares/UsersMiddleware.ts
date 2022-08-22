@@ -21,3 +21,5 @@ export default class UsersMiddleware extends CustomMiddleware<IUser> {
     next();
   };
 }
+
+export const usersMiddleware = new UsersMiddleware();
