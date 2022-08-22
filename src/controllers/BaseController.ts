@@ -13,8 +13,7 @@ import IService from '../interfaces/IService';
 
 enum ControllerErrors {
   INTERNAL = 'Internal Server Error',
-  NOT_FOUND = 'Entity Not Found With Such Id',
-  BAD_REQUEST = 'Invalid Data Format',
+  NOT_FOUND = 'Not Found Entity With Such Id',
 }
 
 export default abstract class BaseController<T> implements IController<T> {

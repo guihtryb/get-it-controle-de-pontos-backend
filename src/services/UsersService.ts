@@ -50,14 +50,13 @@ export default class UsersService implements IService<IUser> {
   async update(id: string, user: IUser): Promise<IUser | null> {
     const parsedId = +id;
 
-    const userToUpdate = await this.getById(id);
-
-    if (!userToUpdate) return null;
-
-    await Users.update({ user }, { where: { id: parsedId } });
-
+    await this._model.update(user, { where: { id: parsedId } });
+    console.log(+user.points);
+    
     const userUpdated = await this.getById(id);
 
+    if (!userUpdated) return null;
+    
     return userUpdated;
   }
 

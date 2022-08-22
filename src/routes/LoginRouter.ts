@@ -14,7 +14,7 @@ export default class LoginRouter {
     controller: LoginController,
     route: string = controller.route,
   ) {
-    this.router.post(route, middleware.verifyLoginData, controller.create);
+    this.router.post(route, middleware.verifyData, controller.create);
     this.router.get(route, controller.get);
   }
 }

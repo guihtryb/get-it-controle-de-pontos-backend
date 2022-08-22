@@ -11,4 +11,7 @@ const loginSchema = z.object({
   }),
 });
 
+type ILogin = z.infer<typeof loginSchema>;
+
+export { ILogin };
 export default loginSchema;

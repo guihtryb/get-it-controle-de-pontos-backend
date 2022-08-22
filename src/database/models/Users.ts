@@ -12,7 +12,7 @@ class Users extends Model {
 
   role: string;
 
-  points: number;
+  points: string;
 }
 
 Users.init({

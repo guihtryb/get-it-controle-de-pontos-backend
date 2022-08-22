@@ -1,24 +1,18 @@
 import { NextFunction, Request, Response } from 'express';
-import { ZodIssue } from 'zod';
-import loginSchema from '../interfaces/ILogin';
+import loginSchema, { ILogin } from '../interfaces/ILogin';
+import CustomMiddleware from './CustomMiddleware';
 
-export default class LoginMiddleware {
-  static createError = (issue: ZodIssue) => ({
-    path: [issue.path].toString(),
-    message: issue.message,
-  });
-
-  verifyLoginData = (req: Request, res: Response, next: NextFunction) => {
+export default class LoginMiddleware extends CustomMiddleware<ILogin> {
+  verifyData = (req: Request, res: Response, next: NextFunction) => {
     const { body } = req;
 
     const loginData = loginSchema.safeParse(body);
 
     if (!loginData.success) {
-      const errors = loginData.error.issues.map(LoginMiddleware.createError);
+      const errors = loginData.error.issues.map(CustomMiddleware.createError);
 
       return res.status(400).json({ errors });
     }
-
     next();
   };
 }
