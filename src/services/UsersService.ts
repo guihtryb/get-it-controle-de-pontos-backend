@@ -1,5 +1,5 @@
-import IUser, { userZodSchema } from '../interfaces/IUser';
-import IService, { ServiceError } from '../interfaces/IService';
+import IUser from '../interfaces/IUser';
+import IService from '../interfaces/IService';
 import Users from '../database/models/Users';
 
 export default class UsersService implements IService<IUser> {
@@ -9,11 +9,8 @@ export default class UsersService implements IService<IUser> {
     this._model = Users;
   }
 
-  async create(newUser: IUser): Promise<IUser | ServiceError> {
-    const parsed = userZodSchema.safeParse(newUser);
-
-    return (parsed.success ? this._model.create(newUser)
-      : { error: parsed.error });
+  async create(newUser: IUser): Promise<IUser> {
+    return this._model.create(newUser);
   }
 
   static excludeUserPassword(user: IUser): IUser {
@@ -50,13 +47,14 @@ export default class UsersService implements IService<IUser> {
   async update(id: string, user: IUser): Promise<IUser | null> {
     const parsedId = +id;
 
-    await this._model.update(user, { where: { id: parsedId } });
-    console.log(+user.points);
-    
+    const userToUpdate = await this.getById(id);
+
+    if (!userToUpdate) return null;
+
+    await Users.update({ user }, { where: { id: parsedId } });
+
     const userUpdated = await this.getById(id);
 
-    if (!userUpdated) return null;
-    
     return userUpdated;
   }
 
