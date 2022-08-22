@@ -10,43 +10,37 @@ export default class UsersService implements IService<IUser> {
   }
 
   async create(newUser: IUser): Promise<IUser | false> {
-    console.log(newUser);
     const alreadyExists = await this._model
       .findOne({ where: { fullName: newUser.fullName, email: newUser.email } });
-    console.log(alreadyExists);
-    
+
     if (alreadyExists) return false;
-    
-    return this._model.create(newUser);
-  }
 
-  static excludeUserPassword(user: IUser): IUser {
-    const userInfos = {
-      id: user.id,
-      fullName: user.fullName,
-      email: user.email,
-      role: user.role,
-      points: user.points,
-    };
+    await this._model.create(newUser);
 
-    return userInfos;
+    const user = await this._model
+      .findOne({ 
+        where: { fullName: newUser.fullName },
+        attributes: { exclude: ['password'] } });
+
+    if (!user) return false;
+
+    return user;
   }
 
   async getById(id: string): Promise<IUser | null> {
     const parsedId = +id;
 
-    const user = await this._model.findByPk(parsedId);
+    const user = await this._model
+      .findByPk(parsedId, { attributes: { exclude: ['password'] } });
 
     if (!user) return null;
 
-    const userInfos = UsersService.excludeUserPassword(user);
-
-    return userInfos;
+    return user;
   }
 
   async getAll(): Promise<IUser[]> {
-    const users = (await this._model.findAll())
-      .map(UsersService.excludeUserPassword);
+    const users = (await this._model
+      .findAll({ attributes: { exclude: ['password'] } }));
 
     return users;
   }
