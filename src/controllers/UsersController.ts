@@ -46,7 +46,10 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const user = await this.service.getById(id);
 
-      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
+      if (!user) {
+        return res.status(404)
+          .json({ message: this.errors.NOT_FOUND });
+      } 
 
       return res.status(200).json(user);
     } catch (error) {
@@ -58,13 +61,15 @@ export default class UsersController extends BaseController<IUser> {
     req: Request,
     res: Response<IUser | ResponseError>,
   ): Promise<typeof res> => {
-    const { points } = req.body;
+    const { body } = req;
     const { id } = req.params;
 
     try {
-      const user = await this.service.update(id, points);
+      const user = await this.service.update(id, body);
 
-      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
+      if (!user) {
+        return res.status(404).json({ message: this.errors.NOT_FOUND });
+      }
 
       return res.status(200).json(user);
     } catch (error) {

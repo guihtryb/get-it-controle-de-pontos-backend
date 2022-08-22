@@ -13,8 +13,7 @@ import IService from '../interfaces/IService';
 
 enum ControllerErrors {
   INTERNAL = 'Internal Server Error',
-  NOT_FOUND = 'Entity Not Found With Such Id',
-  BAD_REQUEST = 'Invalid Data Format',
+  NOT_FOUND = 'Not Found Entity With Such Id',
 }
 
 export default abstract class BaseController<T> implements IController<T> {
@@ -29,14 +28,10 @@ export default abstract class BaseController<T> implements IController<T> {
     res: Response<T | ResponseError>,
   ): Promise<typeof res>;
 
-  static createError(issue: ZodIssue): ControllerError {
-    const error = {
-      path: issue.path ? issue.path[0].toString() : undefined,
-      message: issue.message,
-    };
-
-    return error;
-  }
+  static createError = (issue: ZodIssue): ControllerError => ({
+    path: issue.path ? [issue.path].toString() : undefined,
+    message: issue.message,
+  });
 
   getAll = async (
     _req: Request,

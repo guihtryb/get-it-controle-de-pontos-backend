@@ -17,7 +17,7 @@ const userZodSchema = z.object({
       5,
       { message: 'password must be 5 or more characters long' },
     ).optional(),
-  points: z.number(),
+  points: z.string(),
   role: z.string().min(6, {
     message: 'role must be 6 or more characters long',
   }),

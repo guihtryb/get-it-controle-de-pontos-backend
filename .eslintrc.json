@@ -26,6 +26,7 @@
     },
     "plugins": ["@typescript-eslint", "sonarjs", "editorconfig", "mocha"],
     "rules": {
+        "@typescript-eslint/no-throw-literal":"off",
         "no-underscore-dangle": "off",
         "no-console": "off",
         "camelcase": "warn",
