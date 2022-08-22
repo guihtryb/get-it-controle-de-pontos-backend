@@ -9,7 +9,14 @@ export default class UsersService implements IService<IUser> {
     this._model = Users;
   }
 
-  async create(newUser: IUser): Promise<IUser> {
+  async create(newUser: IUser): Promise<IUser | false> {
+    console.log(newUser);
+    const alreadyExists = await this._model
+      .findOne({ where: { fullName: newUser.fullName, email: newUser.email } });
+    console.log(alreadyExists);
+    
+    if (alreadyExists) return false;
+    
     return this._model.create(newUser);
   }
 
@@ -47,11 +54,7 @@ export default class UsersService implements IService<IUser> {
   async update(id: string, user: IUser): Promise<IUser | null> {
     const parsedId = +id;
 
-    const userToUpdate = await this.getById(id);
-
-    if (!userToUpdate) return null;
-
-    await Users.update({ user }, { where: { id: parsedId } });
+    await this._model.update(user, { where: { id: parsedId } });
 
     const userUpdated = await this.getById(id);
 
@@ -65,7 +68,7 @@ export default class UsersService implements IService<IUser> {
 
     const parsedId = +id;
 
-    await Users.destroy({ where: { id: parsedId } });
+    await this._model.destroy({ where: { id: parsedId } });
 
     return userToDelete;
   }

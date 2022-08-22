@@ -5,7 +5,7 @@ export interface ServiceError {
 }
 
 export default interface IService<T> {
-  create(payload: T): Promise<T>;
+  create(payload: T): Promise<T | false>;
   getById(id: string): Promise<T | null>;
   getAll(): Promise<T[]>;
   update(id: string, payload: T): Promise<T | null>;

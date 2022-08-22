@@ -9,7 +9,12 @@ export default class ProductsService implements IService<IProduct> {
     this._model = Products;
   }
 
-  async create(newProduct: IProduct): Promise<IProduct> {
+  async create(newProduct: IProduct): Promise<IProduct | false> {
+    const alreadyExists = await this._model
+      .findOne({ where: { name: newProduct.name } });
+
+    if (alreadyExists) return false;
+
     return this._model.create(newProduct);
   }
 
@@ -34,7 +39,7 @@ export default class ProductsService implements IService<IProduct> {
 
     if (!productToUpdate) return null;
 
-    await Products.update(product, { where: { id: parsedId } });
+    await this._model.update(product, { where: { id: parsedId } });
 
     const productUpdated = await this.getById(id);
 
@@ -42,13 +47,13 @@ export default class ProductsService implements IService<IProduct> {
   }
 
   async delete(id: string): Promise<IProduct | null> {
-    const productToDelete = await this.getById(id);
-
-    if (!productToDelete) return null;
-
     const parsedId = +id;
 
-    await Products.destroy({ where: { id: parsedId } });
+    const productToDelete = await this.getById(id);
+    
+    if (!productToDelete) return null;
+
+    await this._model.destroy({ where: { id: parsedId } });
 
     return productToDelete;
   }

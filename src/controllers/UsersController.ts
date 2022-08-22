@@ -31,6 +31,10 @@ export default class UsersController extends BaseController<IUser> {
 
       const newUser = await this.service.create(body);
 
+      if (!newUser) {
+        return res.status(409).json({ message: this.errors.CONFLICT });
+      }
+
       return res.status(201).json(newUser);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
@@ -84,9 +88,11 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const user = await this.service.delete(id);
 
-      if (!user) return res.status(404).json({ message: this.errors.INTERNAL });
+      if (!user) {
+        return res.status(404).json({ message: this.errors.NOT_FOUND });
+      }
 
-      return res.status(204).json(user);
+      return res.status(200).json(user);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }

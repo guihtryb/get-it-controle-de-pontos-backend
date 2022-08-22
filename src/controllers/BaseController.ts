@@ -14,6 +14,7 @@ import IService from '../interfaces/IService';
 enum ControllerErrors {
   INTERNAL = 'Internal Server Error',
   NOT_FOUND = 'Not Found Entity With Such Id',
+  CONFLICT = 'Entity Already Exists',
 }
 
 export default abstract class BaseController<T> implements IController<T> {

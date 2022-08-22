@@ -27,6 +27,9 @@ export default class ProductsController extends BaseController<IProduct> {
     try {
       const newProduct = await this.service.create(body);
 
+      if (!newProduct) {
+        return res.status(409).json({ message: this.errors.CONFLICT });
+      }
       return res.status(201).json(newProduct);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
@@ -81,10 +84,10 @@ export default class ProductsController extends BaseController<IProduct> {
       const product = await this.service.delete(id);
 
       if (!product) {
-        return res.status(404).json({ message: this.errors.INTERNAL });
+        return res.status(404).json({ message: this.errors.NOT_FOUND });
       }
 
-      return res.status(204).json(product);
+      return res.status(200).json(product);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }

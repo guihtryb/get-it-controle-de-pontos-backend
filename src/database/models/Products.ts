@@ -28,6 +28,10 @@ Products.init({
     type: STRING(255),
     allowNull: false,
   },
+  urlImage: {
+    type: STRING(255),
+    allowNull: false,
+  },
   totalQuantity: {
     type: INTEGER,
     allowNull: false,

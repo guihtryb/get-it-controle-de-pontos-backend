@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import cors from 'cors';
+import path from 'path';
 
 export default class App {
   public app: express.Application;
@@ -12,6 +13,10 @@ export default class App {
   private config() {
     this.app.use(express.json());
     this.app.use(cors());
+    this.app.use(
+      '/images',
+      express.static(path.join(__dirname, '../public/images')),
+    );
   }
 
   public addRouter(router: Router) {
