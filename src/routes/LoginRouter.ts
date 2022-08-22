@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import LoginMiddleware from '../middlewares/LoginMiddleware';
+import CustomMiddleware from '../middlewares/CustomMiddleware';
 import LoginController from '../controllers/LoginController';
+import { ILogin } from '../interfaces/ILogin';
 
 export default class LoginRouter {
   public router: Router;
@@ -10,7 +11,7 @@ export default class LoginRouter {
   }
 
   public addRoutes(
-    middleware: LoginMiddleware,
+    middleware: CustomMiddleware<ILogin>,
     controller: LoginController,
     route: string = controller.route,
   ) {
@@ -18,3 +19,5 @@ export default class LoginRouter {
     this.router.get(route, controller.get);
   }
 }
+
+export const loginRouter = new LoginRouter();

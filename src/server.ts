@@ -1,26 +1,31 @@
 import App from './App';
-import LoginController from './controllers/LoginController';
-import UsersController from './controllers/UsersController';
-import IUser from './interfaces/IUser';
-import LoginMiddleware from './middlewares/LoginMiddleware';
-import UsersMiddleware from './middlewares/UsersMiddleware';
+import { usersController } from './controllers/UsersController';
+import CustomMiddleware from './middlewares/CustomMiddleware';
+import { loginController } from './controllers/LoginController';
+import IUser, { userZodSchema } from './interfaces/IUser';
 import CustomRouter from './routes/CustomRouter';
-import LoginRouter from './routes/LoginRouter';
+import { loginRouter } from './routes/LoginRouter';
+import loginSchema, { ILogin } from './interfaces/ILogin';
+import IProduct, { productZodSchema } from './interfaces/IProduct';
+import { productsController } from './controllers/ProductsController';
 
 const server = new App();
 
-const usersMiddleware = new UsersMiddleware();
-const usersController = new UsersController();
+const usersMiddleware = new CustomMiddleware<IUser>(userZodSchema);
 const usersRouter = new CustomRouter<IUser>();
 
 usersRouter.addRoutes(usersMiddleware, usersController);
 server.addRouter(usersRouter.router);
 
-const loginMiddleware = new LoginMiddleware();
-const loginController = new LoginController();
-const loginRouter = new LoginRouter();
+const loginMiddleware = new CustomMiddleware<ILogin>(loginSchema);
 
 loginRouter.addRoutes(loginMiddleware, loginController);
 server.addRouter(loginRouter.router);
+
+const productsMiddleware = new CustomMiddleware<IProduct>(productZodSchema);
+const productsRouter = new CustomRouter<IProduct>();
+
+productsRouter.addRoutes(productsMiddleware, productsController);
+server.addRouter(productsRouter.router);
 
 export default server;

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-import IUser from '../interfaces/IUser';
-import { usersService } from '../services/UsersService';
+import IProduct from '../interfaces/IProduct';
+import { productsService } from '../services/ProductsService';
 import { RequestWithBody, ResponseError } from '../interfaces/IController';
 import BaseController from './BaseController';
 
-export default class UsersController extends BaseController<IUser> {
+export default class ProductsController extends BaseController<IProduct> {
   private _route: string;
 
   constructor(
-    service = usersService,
-    route = '/users',
+    service = productsService,
+    route = '/products',
   ) {
     super(service);
     this._route = route;
@@ -20,22 +20,17 @@ export default class UsersController extends BaseController<IUser> {
   }
 
   create = async (
-    req: RequestWithBody<IUser>,
-    res: Response<IUser | ResponseError>,
+    req: RequestWithBody<IProduct>,
+    res: Response<IProduct | ResponseError>,
   ): Promise<typeof res> => {
     const { body } = req;
     try {
-      if (!body.password) {
-        return res.status(400).json({ message: 'Password is required' });
-      }
+      const newProduct = await this.service.create(body);
 
-      const newUser = await this.service.create(body);
-
-      if (!newUser) {
+      if (!newProduct) {
         return res.status(409).json({ message: this.errors.CONFLICT });
       }
-
-      return res.status(201).json(newUser);
+      return res.status(201).json(newProduct);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
@@ -43,18 +38,18 @@ export default class UsersController extends BaseController<IUser> {
 
   getById = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<IProduct | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
-      const user = await this.service.getById(id);
+      const product = await this.service.getById(id);
 
-      if (!user) {
+      if (!product) {
         return res.status(404)
           .json({ message: this.errors.NOT_FOUND });
       } 
 
-      return res.status(200).json(user);
+      return res.status(200).json(product);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
@@ -62,19 +57,19 @@ export default class UsersController extends BaseController<IUser> {
 
   update = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<IProduct | ResponseError>,
   ): Promise<typeof res> => {
     const { body } = req;
     const { id } = req.params;
 
     try {
-      const user = await this.service.update(id, body);
+      const product = await this.service.update(id, body);
 
-      if (!user) {
+      if (!product) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });
       }
 
-      return res.status(200).json(user);
+      return res.status(200).json(product);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
@@ -82,21 +77,21 @@ export default class UsersController extends BaseController<IUser> {
 
   delete = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<IProduct | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
-      const user = await this.service.delete(id);
+      const product = await this.service.delete(id);
 
-      if (!user) {
+      if (!product) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });
       }
 
-      return res.status(200).json(user);
+      return res.status(200).json(product);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 }
 
-export const usersController = new UsersController();
+export const productsController = new ProductsController();
