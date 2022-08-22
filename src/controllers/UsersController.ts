@@ -25,13 +25,12 @@ export default class UsersController extends BaseController<IUser> {
   ): Promise<typeof res> => {
     const { body } = req;
     try {
+      if (!body.password) {
+        return res.status(400).json({ message: 'Password is required' });
+      }
+
       const newUser = await this.service.create(body);
 
-      if ('error' in newUser) {
-        const errors = newUser.error.issues.map(UsersController.createError);
-
-        return res.status(400).json({ errors });
-      }
       return res.status(201).json(newUser);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
