@@ -27,11 +27,9 @@ export default class UsersService implements IService<IUser> {
     return user;
   }
 
-  async getById(id: string): Promise<IUser | null> {
-    const parsedId = +id;
-
+  async getById(id: number): Promise<IUser | null> {
     const user = await this._model
-      .findByPk(parsedId, { attributes: { exclude: ['password'] } });
+      .findByPk(id, { attributes: { exclude: ['password'] } });
 
     if (!user) return null;
 
@@ -45,24 +43,23 @@ export default class UsersService implements IService<IUser> {
     return users;
   }
 
-  async update(id: string, user: IUser): Promise<IUser | null> {
-    const parsedId = +id;
+  async update(id: number, userField: object): Promise<IUser | null> {
+    const [key] = Object.keys(userField);
+    const [value] = Object.values(userField);
 
-    await this._model.update(user, { where: { id: parsedId } });
+    await this._model.update({ [key]: value }, { where: { id } });
 
     const userUpdated = await this.getById(id);
 
     return userUpdated;
   }
 
-  async delete(id: string): Promise<IUser | null> {
+  async delete(id: number): Promise<IUser | null> {
     const userToDelete = await this.getById(id);
 
     if (!userToDelete) return null;
 
-    const parsedId = +id;
-
-    await this._model.destroy({ where: { id: parsedId } });
+    await this._model.destroy({ where: { id } });
 
     return userToDelete;
   }

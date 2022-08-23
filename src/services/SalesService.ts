@@ -1,7 +1,9 @@
 import { ISale } from '../interfaces/ISale';
 import IService from '../interfaces/IService';
+import { ISalesProduct } from '../interfaces/ISalesProduct';
 import Sales from '../database/models/Sales';
 import SalesProducts from '../database/models/SalesProducts';
+import { productsService } from './ProductsService';
 
 export default class SalesService implements IService<ISale> {
   private _model;
@@ -28,7 +30,7 @@ export default class SalesService implements IService<ISale> {
 
   static includeSaleProducts(
     sale: Sales,
-    products: SalesProducts[],
+    products: ISalesProduct[],
   ) {
     const saleInfos = {
       id: sale.id,
@@ -46,6 +48,25 @@ export default class SalesService implements IService<ISale> {
     return saleInfos;
   }
 
+  static async registerSaleProducts(id: number, products: ISalesProduct[]) {
+    await Promise.all(
+      products.map(async (product) => {
+        await SalesProducts.create({ saleId: id, ...product });
+        const productBought = await productsService
+          .getById(product.productId);
+
+        if (productBought) {
+          const productId = productBought.id as number;
+          const quantityDecreased = productBought
+            .totalQuantity - product.quantity;
+          const totalQuantity = quantityDecreased < 0 ? 0 : quantityDecreased; 
+          await productsService
+            .update(productId, { totalQuantity });
+        }
+      }),
+    );
+  }
+
   async create(
     newSale: ISale,
   ): Promise<ISale | false> {
@@ -54,20 +75,17 @@ export default class SalesService implements IService<ISale> {
     const { products } = newSale;
 
     const { id } = await this._model.create({ ...saleWithoutProducts });
-    
-    await Promise.all(
-      products.map(async (saleProduct) => SalesProducts
-        .create({ saleId: id, ...saleProduct })),
-    );
 
-    const sale = await this.getById(id.toString());
+    await SalesService.registerSaleProducts(id, products);
+
+    const sale = await this.getById(id);
 
     if (!sale) return false;
 
     return sale;
   }
 
-  async getById(id: string): Promise<ISale | null> {
+  async getById(id: number): Promise<ISale | null> {
     const parsedId = +id;
 
     const sale = await this._model.findByPk(parsedId);
@@ -88,27 +106,30 @@ export default class SalesService implements IService<ISale> {
     const sales = await this._model.findAll();
 
     const salesWithProducts = await Promise.all(
-      sales.map(({ id }) => this.getById(id.toString())),
+      sales.map(({ id }) => this.getById(id)),
     ) as ISale[];
 
     return salesWithProducts;
   }
 
-  async update(id: string, sale: ISale): Promise<ISale | null> {
+  async update(id: number, saleField: object): Promise<ISale | null> {
     const parsedId = +id;
 
     const saleToUpdate = await this.getById(id);
 
     if (!saleToUpdate) return null;
 
-    await this._model.update(sale, { where: { id: parsedId } });
+    const [key] = Object.keys(saleField);
+    const [value] = Object.values(saleField);
+
+    await this._model.update({ [key]: value }, { where: { id: parsedId } });
 
     const SaleUpdated = await this.getById(id);
 
     return SaleUpdated;
   }
 
-  async delete(id: string): Promise<ISale | null> {
+  async delete(id: number): Promise<ISale | null> {
     const parsedId = +id;
 
     const saleToDelete = await this.getById(id);
