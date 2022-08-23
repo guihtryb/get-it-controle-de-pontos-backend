@@ -15,6 +15,8 @@ class Sales extends Model {
 
   deliveryAddress: string;
 
+  deliveryNumber: string;
+
   saleDate: Date;
 
   status: string;
@@ -74,10 +76,10 @@ Sales.init({
   timestamps: false,
 });
 
-Sales.belongsTo(Users, { foreignKey: 'id', as: 'userId' });
-Sales.belongsTo(Users, { foreignKey: 'id', as: 'sellerId' });
+Sales.belongsTo(Users, { foreignKey: 'id', as: 'user' });
+Sales.belongsTo(Users, { foreignKey: 'id', as: 'seller' });
 
-Users.hasMany(Sales, { foreignKey: 'id', as: 'userId' });
-Users.hasMany(Sales, { foreignKey: 'id', as: 'sellerId' });
+Users.hasMany(Sales, { foreignKey: 'userId', as: 'user' });
+Users.hasMany(Sales, { foreignKey: 'sellerId', as: 'seller' });
 
 export default Sales;
