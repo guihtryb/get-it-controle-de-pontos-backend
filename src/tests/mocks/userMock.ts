@@ -1,28 +1,28 @@
 import IUser from '../../interfaces/IUser';
 
-const userMock:IUser = {
+const userMock: IUser = {
   fullName: 'Jhon Daltrey',
   email: 'daltrey@email.com',
   password: 'hashed password',
-  points: 1000,
+  points: "1000",
   role: 'customer',
 };
 
-const userMockWithId:IUser = {
+const userMockWithId: IUser = {
   id: 1,
   fullName: 'Jhon Daltrey',
   email: 'daltrey@email.com',
   password: 'hashed password',
-  points: 1000,
+  points: "1000",
   role: 'customer'
 };
 
-const userMockWithIdUpdated:IUser = {
+const userMockWithIdUpdated: IUser = {
   id: 1,
   fullName: 'Jhon Daltrey',
   email: 'daltrey@email.com',
   password: 'hashed password',
-  points: 1800,
+  points: "1800",
   role: 'customer'
 };
 
