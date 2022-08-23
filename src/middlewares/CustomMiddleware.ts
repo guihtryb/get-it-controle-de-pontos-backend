@@ -4,7 +4,7 @@ import { RequestWithBody } from '../interfaces/IController';
 
 export default class CustomMiddleware<T> {
   private _zodObject: z.ZodObject<ZodRawShape>;
-
+  
   constructor(
     zodObject: z.ZodObject<ZodRawShape>,
   ) {
@@ -29,6 +29,26 @@ export default class CustomMiddleware<T> {
       const errors = data.error.issues.map(CustomMiddleware.createError);
 
       return res.status(400).json({ errors });
+    }
+    next();
+  };
+
+  verifyUpdateField = (
+    req: RequestWithBody<T>,
+    res: Response,
+    next: NextFunction,
+  ) => {
+    const { body } = req;
+
+    const [bodyKey] = Object.keys(body);
+
+    const data = this._zodObject.keyof().Values;
+
+    const isFieldCorrect = bodyKey in data;
+
+    if (!isFieldCorrect) {
+      return res.status(400)
+        .json({ message: `Invalid Field Named: '${bodyKey}'` });
     }
     next();
   };
