@@ -5,9 +5,9 @@ export interface ServiceError {
 }
 
 export default interface IService<T> {
-  create(payload: T): Promise<T | false>;
-  getById(id: string): Promise<T | null>;
+  create(payload: T, junctionData?: unknown): Promise<T | false>;
+  getById(id: number): Promise<T | null>;
   getAll(): Promise<T[]>;
-  update(id: string, payload: T): Promise<T | null>;
-  delete(id: string): Promise<T | null>;
+  update(id: number, payload: unknown): Promise<T | null>;
+  delete(id: number): Promise<T | null>;
 }
