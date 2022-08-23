@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
-import IUser from '../interfaces/IUser';
-import { usersService } from '../services/UsersService';
+import { salesService } from '../services/SalesService';
 import { RequestWithBody, ResponseError } from '../interfaces/IController';
 import BaseController from './BaseController';
+import { ISale } from '../interfaces/ISale';
 
-export default class UsersController extends BaseController<IUser> {
+export default class SalesController extends BaseController<ISale> {
   private _route: string;
 
   constructor(
-    service = usersService,
-    route = '/users',
+    service = salesService,
+    route = '/sales',
   ) {
     super(service);
     this._route = route;
@@ -20,43 +20,41 @@ export default class UsersController extends BaseController<IUser> {
   }
 
   create = async (
-    req: RequestWithBody<IUser>,
-    res: Response<IUser | ResponseError>,
+    req: RequestWithBody<ISale>,
+    res: Response<ISale | ResponseError>,
   ): Promise<typeof res> => {
     const { body } = req;
     try {
-      if (!body.password) {
-        return res.status(400).json({ message: 'Password is required' });
+      const newSale = await this.service.create(body);
+
+      if (!newSale) {
+        return res.status(409).json({ message: 'Missing Products' });
       }
 
-      const newUser = await this.service.create(body);
-
-      if (!newUser) {
-        return res.status(409).json({ message: this.errors.CONFLICT });
-      }
-
-      return res.status(201).json(newUser);
+      return res.status(201).json(newSale);
     } catch (error) {
+      console.log(error);
+
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 
   getById = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<ISale | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
       const parsedId = +id;
 
-      const user = await this.service.getById(parsedId);
+      const sale = await this.service.getById(parsedId);
 
-      if (!user) {
+      if (!sale) {
         return res.status(404)
           .json({ message: this.errors.NOT_FOUND });
       } 
 
-      return res.status(200).json(user);
+      return res.status(200).json(sale);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
@@ -64,7 +62,7 @@ export default class UsersController extends BaseController<IUser> {
 
   update = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<ISale | ResponseError>,
   ): Promise<typeof res> => {
     const { body } = req;
     const { id } = req.params;
@@ -72,13 +70,13 @@ export default class UsersController extends BaseController<IUser> {
     try {
       const parsedId = +id;
 
-      const user = await this.service.update(parsedId, body);
+      const sale = await this.service.update(parsedId, body);
 
-      if (!user) {
+      if (!sale) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });
       }
 
-      return res.status(200).json(user);
+      return res.status(200).json(sale);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
@@ -86,23 +84,23 @@ export default class UsersController extends BaseController<IUser> {
 
   delete = async (
     req: Request,
-    res: Response<IUser | ResponseError>,
+    res: Response<ISale | ResponseError>,
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
       const parsedId = +id;
 
-      const user = await this.service.delete(parsedId);
+      const sale = await this.service.delete(parsedId);
 
-      if (!user) {
+      if (!sale) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });
       }
 
-      return res.status(200).json(user);
+      return res.status(200).json(sale);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
     }
   };
 }
 
-export const usersController = new UsersController();
+export const salesController = new SalesController();
