@@ -18,7 +18,7 @@ export default class ProductsService implements IService<IProduct> {
     return this._model.create(newProduct);
   }
 
-  async getById(id: string): Promise<IProduct | null> {
+  async getById(id: number): Promise<IProduct | null> {
     const parsedId = +id;
 
     const product = await this._model.findByPk(parsedId);
@@ -32,25 +32,31 @@ export default class ProductsService implements IService<IProduct> {
     return this._model.findAll();
   }
 
-  async update(id: string, product: IProduct): Promise<IProduct | null> {
+  async update(
+    id: number,
+    productField: object,
+  ): Promise<IProduct | null> {
     const parsedId = +id;
 
     const productToUpdate = await this.getById(id);
 
     if (!productToUpdate) return null;
 
-    await this._model.update(product, { where: { id: parsedId } });
+    const [key] = Object.keys(productField);
+    const [value] = Object.values(productField);
+
+    await this._model.update({ [key]: value }, { where: { id: parsedId } });
 
     const productUpdated = await this.getById(id);
 
     return productUpdated;
   }
 
-  async delete(id: string): Promise<IProduct | null> {
+  async delete(id: number): Promise<IProduct | null> {
     const parsedId = +id;
 
     const productToDelete = await this.getById(id);
-    
+
     if (!productToDelete) return null;
 
     await this._model.destroy({ where: { id: parsedId } });

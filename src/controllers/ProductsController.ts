@@ -30,6 +30,7 @@ export default class ProductsController extends BaseController<IProduct> {
       if (!newProduct) {
         return res.status(409).json({ message: this.errors.CONFLICT });
       }
+
       return res.status(201).json(newProduct);
     } catch (error) {
       return res.status(500).json({ message: this.errors.INTERNAL });
@@ -42,7 +43,9 @@ export default class ProductsController extends BaseController<IProduct> {
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
-      const product = await this.service.getById(id);
+      const parsedId = +id;
+
+      const product = await this.service.getById(parsedId);
 
       if (!product) {
         return res.status(404)
@@ -63,7 +66,9 @@ export default class ProductsController extends BaseController<IProduct> {
     const { id } = req.params;
 
     try {
-      const product = await this.service.update(id, body);
+      const parsedId = +id;
+
+      const product = await this.service.update(parsedId, body);
 
       if (!product) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });
@@ -81,7 +86,9 @@ export default class ProductsController extends BaseController<IProduct> {
   ): Promise<typeof res> => {
     const { id } = req.params;
     try {
-      const product = await this.service.delete(id);
+      const parsedId = +id;
+
+      const product = await this.service.delete(parsedId);
 
       if (!product) {
         return res.status(404).json({ message: this.errors.NOT_FOUND });

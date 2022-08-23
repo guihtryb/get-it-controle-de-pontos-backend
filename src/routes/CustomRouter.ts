@@ -17,7 +17,11 @@ export default class CustomRouter<T> {
     this.router.get(route, controller.getAll);
     this.router.get(`${route}/:id`, controller.getById);
     this.router.post(route, middleware.verifyData, controller.create);
-    this.router.put(`${route}/:id`, middleware.verifyData, controller.update);
+    this.router.put(
+      `${route}/:id`,
+      middleware.verifyUpdateField,
+      controller.update,
+    );
     this.router.delete(`${route}/:id`, controller.delete);
   }
 }

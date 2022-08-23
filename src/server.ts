@@ -8,6 +8,8 @@ import { loginRouter } from './routes/LoginRouter';
 import loginSchema, { ILogin } from './interfaces/ILogin';
 import IProduct, { productZodSchema } from './interfaces/IProduct';
 import { productsController } from './controllers/ProductsController';
+import saleSchema, { ISale } from './interfaces/ISale';
+import { salesController } from './controllers/SalesController';
 
 const server = new App();
 
@@ -27,5 +29,11 @@ const productsRouter = new CustomRouter<IProduct>();
 
 productsRouter.addRoutes(productsMiddleware, productsController);
 server.addRouter(productsRouter.router);
+
+const salesMiddleware = new CustomMiddleware<ISale>(saleSchema);
+const salesRouter = new CustomRouter<ISale>();
+
+salesRouter.addRoutes(salesMiddleware, salesController);
+server.addRouter(salesRouter.router);
 
 export default server;
