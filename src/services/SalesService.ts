@@ -4,6 +4,8 @@ import { ISalesProduct } from '../interfaces/ISalesProduct';
 import Sales from '../database/models/Sales';
 import SalesProducts from '../database/models/SalesProducts';
 import { productsService } from './ProductsService';
+import { usersService } from './UsersService';
+import Users from '../database/models/Users';
 
 export default class SalesService implements IService<ISale> {
   private _model;
@@ -72,12 +74,19 @@ export default class SalesService implements IService<ISale> {
   ): Promise<ISale | false> {
     const saleWithoutProducts = SalesService.excludeSaleProducts(newSale);
 
-    const { products } = newSale;
+    const {
+      id,
+      userId,
+      totalPoints,
+    } = await this._model.create({ ...saleWithoutProducts });
 
-    const { id } = await this._model.create({ ...saleWithoutProducts });
+    const { products } = newSale;
 
     await SalesService.registerSaleProducts(id, products);
 
+    const { points: userPoints } = await usersService.getById(userId) as Users;
+
+    await usersService.update(userId, { points: +userPoints + +totalPoints });
     const sale = await this.getById(id);
 
     if (!sale) return false;
