@@ -59,7 +59,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.getById('1');
+      const user = await usersService.getById(1);
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -68,7 +68,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.getById('1');
+      const user = await usersService.getById(1);
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -82,7 +82,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.update('1', 1800);
+      const user = await usersService.update(1, { points: 1800 });
 
       expect(user).to.be.deep.equal(userMockWithIdUpdated);
     });
@@ -91,7 +91,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.update('4', 1800);
+      const user = await usersService.update(4, { points: 1800 });
 
       expect(user).to.be.equal(null);
     });
@@ -103,7 +103,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.delete('1');
+      const user = await usersService.delete(1);
 
       expect(user).to.be.deep.equal(userMockWithId);
     });
@@ -112,7 +112,7 @@ describe('User Service', () => {
 
       const usersService = new UsersService();
 
-      const user = await usersService.delete('1');
+      const user = await usersService.delete(1);
 
       expect(user).to.be.equal(null);
     });

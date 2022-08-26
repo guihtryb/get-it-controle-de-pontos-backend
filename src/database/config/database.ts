@@ -6,8 +6,8 @@ const config: Options = {
   password: process.env.DB_PASS || '',
   database: process.env.DB_NAME || 'get_it_api',
   host: process.env.DB_HOST || 'localhost',
-  port: Number(process.env.DB_PORT) || 3306,
-  dialect: 'mysql',
+  port: Number(process.env.DB_PORT) || 5432,
+  dialect: 'postgres',
 };
 
 export = config;
